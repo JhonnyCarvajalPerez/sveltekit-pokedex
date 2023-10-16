@@ -3,18 +3,20 @@
     import Card from "@smui/card";
     import { getPokemonInfo } from "../../../utils/getPokemonInfo";
     import { localFavorites } from "../../../utils";
+    import PokemonStats from "../PokemonStats.svelte";
     const pokemonId = $page.params.id;
     const pokemon = getPokemonInfo(pokemonId);
-    let isInFavorites = localFavorites.isPokemonInFavorites(parseInt(pokemonId));
-
+    
     const onToogleFavorite = () => {
         console.log("toggle called");
         localFavorites.toggleFavorites(parseInt(pokemonId));
         //setIsInFavorites(!isInFavorites);
         isInFavorites = !isInFavorites;
         if (isInFavorites) return;
-
+        
     };
+    let isInFavorites = localFavorites.isPokemonInFavorites(parseInt(pokemonId));
+
 </script>
 
 {#await pokemon}
@@ -41,7 +43,9 @@
                 <div class="flex flex-row items-center justify-between p-5">
                     <h1 class="capitalize">{pokemon?.name}</h1>
                     <button
-                        class="card-btn"
+                        class={!isInFavorites
+                            ? "card-btn-add "
+                            : "card-btn-remove"}
                         on:click={() => onToogleFavorite()}
                     >
                         {isInFavorites
@@ -101,6 +105,9 @@
             </div>
         </Card>
     </div>
+    <div class="flex gap-4">
+        <!-- <PokemonStats {pokemon}/> -->
+    </div>
 {:catch e}
     <p style="color:red">{e.message}</p>
 {/await}
@@ -137,8 +144,18 @@
         width: 100px;
         height: 100px;
     }
-    .card-banner .card-btn {
+    .card-banner .card-btn-add {
         background-image: linear-gradient(rgb(113, 47, 184), rgb(40, 34, 75));
+        width: 200px;
+        height: 50px;
+        border-radius: 6px;
+        color: white;
+    }
+    .card-banner .card-btn-remove {
+        border:2px solid purple;
+        width: 200px;
+        height: 50px;
+        border-radius: 6px;
         color: white;
     }
 </style>
