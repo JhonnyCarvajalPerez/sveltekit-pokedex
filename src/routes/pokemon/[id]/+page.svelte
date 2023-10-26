@@ -6,6 +6,10 @@
     import PokemonStats from "../PokemonStats.svelte";
     const pokemonId = $page.params.id;
     const pokemon = getPokemonInfo(pokemonId);
+
+    export let data;
+
+    console.log(data);
     
     const onToogleFavorite = () => {
         console.log("toggle called");
